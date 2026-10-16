@@ -1,0 +1,614 @@
+{
+  "backlog": {
+    "summary": "First backlog draft for an online appointment booking system for the (fictional) Regional Social Services Talwil. Today almost all appointments are arranged by phone at reception, which consumes about half of the receptionist's time, and roughly one in five appointments is missed without cancellation. Clients should be able to book, reschedule and cancel follow-up appointments with their own social worker online. Initial consultations remain restricted because they must be assigned to the right specialist. Clients receive a neutral SMS reminder the day before. Access must work without passwords or an E-ID, yet stay secure for very sensitive data. Social workers' availability must be taken from their existing Outlook calendars. The interface should be multilingual (German, English, Arabic, Tigrinya) and use plain language. Success after one year: half as many missed appointments and significantly fewer calls at reception. Open topics include the authentication approach (pending the data protection advisor), the handling of initial consultations, and the absence of concrete targets for some goals.",
+    "personas": [
+      {
+        "name": "Client",
+        "description": "Person receiving support from the social services. Often does not read e-mail, frequently has no E-ID and forgets passwords. May feel ashamed about using social services and may share their phone with others. Languages include German, English, Arabic and Tigrinya."
+      },
+      {
+        "name": "Social worker",
+        "description": "Caseworker (e.g. Marco Bianchi) who runs initial consultations and follow-up appointments, manages availability in Outlook and does not want to maintain two calendars."
+      },
+      {
+        "name": "Reception staff member",
+        "description": "Front-desk employee (e.g. Lea Huber) who currently handles almost all appointment scheduling by phone and wants time back for people visiting the counter in person."
+      },
+      {
+        "name": "Head of social services",
+        "description": "Manager (e.g. Claudia Meier) responsible for reducing missed appointments, protecting client privacy and clarifying data protection matters with the data protection advisor."
+      }
+    ],
+    "epics": [
+      {
+        "id": "E1",
+        "title": "Client self-service appointment management",
+        "goal": "Clients can book, reschedule and cancel suitable appointments online without calling reception."
+      },
+      {
+        "id": "E2",
+        "title": "SMS appointment reminders",
+        "goal": "Reduce missed appointments through discreet SMS reminders sent the day before."
+      },
+      {
+        "id": "E3",
+        "title": "Secure password-less client access",
+        "goal": "Clients access their appointments without an E-ID or password while sensitive data stays protected."
+      },
+      {
+        "id": "E4",
+        "title": "Availability and calendar integration",
+        "goal": "Social workers maintain availability only in Outlook, and online bookings never conflict with existing appointments."
+      },
+      {
+        "id": "E5",
+        "title": "Multilingual and plain-language interface",
+        "goal": "Clients can use the service in their language and understand it easily."
+      },
+      {
+        "id": "E6",
+        "title": "Success monitoring",
+        "goal": "Management can track whether missed appointments and phone load at reception are decreasing."
+      }
+    ],
+    "stories": [
+      {
+        "id": "US-1",
+        "epic_id": "E1",
+        "title": "Book follow-up appointment with own social worker online",
+        "persona": "client",
+        "i_want": "to book a follow-up appointment with my own social worker online",
+        "so_that": "I do not have to call reception, where the line is often busy",
+        "statement": "As a client, I want to book a follow-up appointment with my own social worker online, so that I do not have to call reception, where the line is often busy.",
+        "acceptance_criteria": [
+          {
+            "given": "I am an authenticated client with an assigned social worker",
+            "when": "I open the booking page",
+            "then": "only free follow-up slots of my assigned social worker are shown"
+          },
+          {
+            "given": "I selected a free follow-up slot",
+            "when": "I confirm the booking",
+            "then": "the appointment is saved and a confirmation with date, time and address is displayed"
+          },
+          {
+            "given": "another client booked the same slot moments before me",
+            "when": "I confirm the booking",
+            "then": "the booking is rejected with a message and the remaining free slots are shown"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "Online self-booking is the head of service's core goal, and the social worker explicitly named follow-up appointments as suitable for online booking.",
+        "source_quotes": [
+          "Dass Klientinnen und Klienten einen Termin selbst online buchen, verschieben und absagen können.",
+          "Folgetermine bei der eigenen Sozialarbeiterin, das wäre gut online möglich."
+        ],
+        "notes": "Depends on US-7 (access) and US-9 (Outlook availability). The follow-up slot duration is not yet defined; see open questions."
+      },
+      {
+        "id": "US-2",
+        "epic_id": "E1",
+        "title": "Reschedule appointment online",
+        "persona": "client",
+        "i_want": "to move my existing appointment to another free slot online",
+        "so_that": "I can adjust it without calling reception",
+        "statement": "As a client, I want to move my existing appointment to another free slot online, so that I can adjust it without calling reception.",
+        "acceptance_criteria": [
+          {
+            "given": "I have a booked follow-up appointment",
+            "when": "I choose 'reschedule' and select another free slot of my social worker",
+            "then": "the new slot is booked and the original slot is released for booking"
+          },
+          {
+            "given": "I rescheduled an appointment",
+            "when": "the change is saved",
+            "then": "the social worker's Outlook calendar shows the new time and no longer shows the old time"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "Rescheduling is explicitly part of the stated goal and currently consumes reception time.",
+        "source_quotes": [
+          "Dass Klientinnen und Klienten einen Termin selbst online buchen, verschieben und absagen können.",
+          "Ich verbringe locker die Hälfte meiner Zeit mit Terminen vereinbaren, verschieben und absagen."
+        ],
+        "notes": "Any cut-off deadline for rescheduling is still open."
+      },
+      {
+        "id": "US-3",
+        "epic_id": "E1",
+        "title": "Cancel appointment online",
+        "persona": "client",
+        "i_want": "to cancel my appointment online",
+        "so_that": "the slot is freed instead of becoming a no-show",
+        "statement": "As a client, I want to cancel my appointment online, so that the slot is freed instead of becoming a no-show.",
+        "acceptance_criteria": [
+          {
+            "given": "I have a booked appointment",
+            "when": "I cancel it and confirm the cancellation",
+            "then": "the appointment is marked as cancelled and the slot becomes bookable again"
+          },
+          {
+            "given": "I cancelled an appointment",
+            "when": "the cancellation is saved",
+            "then": "no reminder SMS is sent for that appointment"
+          },
+          {
+            "given": "I cancelled an appointment",
+            "when": "the social worker views Outlook",
+            "then": "the appointment no longer blocks the slot"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "About one in five appointments is missed without cancellation, and online cancellation is part of the core goal.",
+        "source_quotes": [
+          "Ungefähr jeder fünfte Termin wird nicht wahrgenommen, ohne Absage.",
+          "Dass Klientinnen und Klienten einen Termin selbst online buchen, verschieben und absagen können."
+        ],
+        "notes": "Initial consultations (US-4) may need a separate cancellation route."
+      },
+      {
+        "id": "US-4",
+        "epic_id": "E1",
+        "title": "Exclude initial consultations from free online booking",
+        "persona": "social worker",
+        "i_want": "initial consultations not to be freely bookable online",
+        "so_that": "every 90-minute initial consultation is assigned to the right specialist",
+        "statement": "As a social worker, I want initial consultations not to be freely bookable online, so that every 90-minute initial consultation is assigned to the right specialist.",
+        "acceptance_criteria": [
+          {
+            "given": "a client without an assigned social worker",
+            "when": "they open the booking page",
+            "then": "no freely selectable initial consultation slots are offered"
+          },
+          {
+            "given": "the online booking page",
+            "when": "a client views the bookable appointment types",
+            "then": "only follow-up appointments with their own social worker are listed"
+          },
+          {
+            "given": "an initial consultation is scheduled by staff",
+            "when": "it is entered",
+            "then": "it occupies a 90-minute slot with the assigned specialist"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "The social worker stated clearly that not every appointment may be freely bookable and that initial consultations must reach the right specialist.",
+        "source_quotes": [
+          "Aber nicht jeder Termin darf frei buchbar sein.",
+          "Ein Erstgespräch dauert neunzig Minuten und muss bei der richtigen Fachperson landen."
+        ],
+        "notes": "How clients request an initial consultation (phone only, or an online request form) is open. This partly conflicts with the head's goal of fully online booking."
+      },
+      {
+        "id": "US-5",
+        "epic_id": "E2",
+        "title": "SMS reminder the day before",
+        "persona": "client",
+        "i_want": "to receive an SMS reminder the day before my appointment",
+        "so_that": "I do not forget my appointment",
+        "statement": "As a client, I want to receive an SMS reminder the day before my appointment, so that I do not forget my appointment.",
+        "acceptance_criteria": [
+          {
+            "given": "a client has a booked appointment and a stored mobile number",
+            "when": "the day before the appointment is reached",
+            "then": "exactly one reminder SMS is sent to that number"
+          },
+          {
+            "given": "an appointment was cancelled before the reminder was sent",
+            "when": "the reminder run executes",
+            "then": "no SMS is sent for that appointment"
+          },
+          {
+            "given": "an appointment was rescheduled",
+            "when": "the reminder is sent",
+            "then": "it contains the new date and time"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "Reminders are the head of service's main lever for halving missed appointments, and reception stated that SMS is the channel clients actually read.",
+        "source_quotes": [
+          "Und dass sie vorher eine Erinnerung bekommen, damit weniger Termine verpasst werden.",
+          "Per SMS, die meisten unserer Klienten lesen keine E-Mails.",
+          "Am besten am Vortag."
+        ],
+        "notes": "Exact send time and handling of clients without a mobile number are open. Should reminders also cover appointments booked by staff by phone?"
+      },
+      {
+        "id": "US-6",
+        "epic_id": "E2",
+        "title": "Neutral SMS content",
+        "persona": "client",
+        "i_want": "the reminder SMS not to mention the social services",
+        "so_that": "nobody else seeing my phone learns that I use social services",
+        "statement": "As a client, I want the reminder SMS not to mention the social services, so that nobody else seeing my phone learns that I use social services.",
+        "acceptance_criteria": [
+          {
+            "given": "a reminder SMS is generated",
+            "when": "its text is composed",
+            "then": "it contains only the appointment time and address, following the pattern 'Ihr Termin morgen um 10 Uhr, Bahnhofstrasse 12'"
+          },
+          {
+            "given": "a reminder SMS is generated",
+            "when": "its text and sender are checked",
+            "then": "neither contains the words 'Sozialdienst', 'Sozialarbeit' or the social worker's name"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "The head of service called this explicitly important because clients feel ashamed and phones may be seen by others.",
+        "source_quotes": [
+          "In der SMS darf nicht stehen, dass es um den Sozialdienst geht.",
+          "Viele schämen sich, und das Handy sieht vielleicht jemand anderes.",
+          "Ihr Termin morgen um 10 Uhr, Bahnhofstrasse 12"
+        ],
+        "notes": "Applies to all SMS, including access links (US-7). Neutral sender ID to be clarified."
+      },
+      {
+        "id": "US-7",
+        "epic_id": "E3",
+        "title": "Password-less access via SMS link or code",
+        "persona": "client",
+        "i_want": "to access my appointments via a link or code sent by SMS instead of a password or E-ID",
+        "so_that": "I can manage appointments even without an E-ID and without remembering passwords",
+        "statement": "As a client, I want to access my appointments via a link or code sent by SMS instead of a password or E-ID, so that I can manage appointments even without an E-ID and without remembering passwords.",
+        "acceptance_criteria": [
+          {
+            "given": "a client with a registered mobile number",
+            "when": "they request access",
+            "then": "an access link or code is sent by SMS, and no password or E-ID is required"
+          },
+          {
+            "given": "an access link is forwarded to another person",
+            "when": "that person opens it",
+            "then": "they cannot see the client's appointments without an additional verification step approved by the data protection advisor"
+          },
+          {
+            "given": "an access code or link has expired or was already used",
+            "when": "it is used",
+            "then": "access is denied and a new code can be requested"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "Without simple access, clients who lack an E-ID and forget passwords cannot use self-service, but the final approach depends on the data protection advisor.",
+        "source_quotes": [
+          "Viele haben keine E-ID und vergessen Passwörter.",
+          "Ein Link per SMS oder ein Code wäre einfacher.",
+          "Ich möchte nicht, dass jemand mit einem weitergeleiteten Link fremde Termine sieht."
+        ],
+        "notes": "Blocked until the data protection advisor decides on the mechanism. Prerequisite for US-1 to US-3. Code validity duration not yet defined."
+      },
+      {
+        "id": "US-8",
+        "epic_id": "E4",
+        "title": "Block online slots occupied in Outlook",
+        "persona": "social worker",
+        "i_want": "any time occupied in my Outlook calendar to be unavailable for online booking",
+        "so_that": "I never get double bookings and do not have to maintain a second calendar",
+        "statement": "As a social worker, I want any time occupied in my Outlook calendar to be unavailable for online booking, so that I never get double bookings and do not have to maintain a second calendar.",
+        "acceptance_criteria": [
+          {
+            "given": "I have an Outlook entry from 10:00 to 11:00",
+            "when": "a client views my free slots",
+            "then": "no slot overlapping 10:00-11:00 is offered"
+          },
+          {
+            "given": "I add a new entry in Outlook",
+            "when": "a client opens the booking page after synchronisation",
+            "then": "the overlapping slot is no longer bookable"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "The social worker stated this as a hard rule and refused to maintain two calendars.",
+        "source_quotes": [
+          "Ich will nicht zwei Kalender pflegen.",
+          "Wenn ich in Outlook einen Termin habe, darf online niemand diesen Slot buchen."
+        ],
+        "notes": "The acceptable synchronisation delay is open. Also, how bookable working hours are defined in Outlook needs to be clarified."
+      },
+      {
+        "id": "US-9",
+        "epic_id": "E4",
+        "title": "Write online bookings into Outlook",
+        "persona": "social worker",
+        "i_want": "appointments booked, rescheduled or cancelled online to appear automatically in my Outlook calendar",
+        "so_that": "Outlook remains my single calendar",
+        "statement": "As a social worker, I want appointments booked, rescheduled or cancelled online to appear automatically in my Outlook calendar, so that Outlook remains my single calendar.",
+        "acceptance_criteria": [
+          {
+            "given": "a client books a follow-up appointment online",
+            "when": "the booking is confirmed",
+            "then": "a corresponding entry is created in my Outlook calendar"
+          },
+          {
+            "given": "a client cancels online",
+            "when": "the cancellation is saved",
+            "then": "the Outlook entry is removed or marked as cancelled"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "The social worker does not want to maintain two calendars, so online bookings must flow into Outlook.",
+        "source_quotes": [
+          "Wir arbeiten mit dem Outlook-Kalender.",
+          "Ich will nicht zwei Kalender pflegen."
+        ],
+        "notes": "Which client data may appear in the Outlook entry is a data protection question."
+      },
+      {
+        "id": "US-10",
+        "epic_id": "E5",
+        "title": "Choose interface language",
+        "persona": "client",
+        "i_want": "to use the booking interface in German, English, Arabic or Tigrinya",
+        "so_that": "I understand how to book and manage my appointment",
+        "statement": "As a client, I want to use the booking interface in German, English, Arabic or Tigrinya, so that I understand how to book and manage my appointment.",
+        "acceptance_criteria": [
+          {
+            "given": "the booking page",
+            "when": "I select one of German, English, Arabic or Tigrinya",
+            "then": "all interface texts are displayed in that language"
+          },
+          {
+            "given": "I selected Arabic",
+            "when": "the page is displayed",
+            "then": "the layout is shown right-to-left"
+          },
+          {
+            "given": "I selected a language",
+            "when": "I receive an SMS",
+            "then": "the SMS uses the selected language"
+          }
+        ],
+        "priority": "Should",
+        "priority_rationale": "German is required, but reception described the other languages as 'helpful' rather than mandatory.",
+        "source_quotes": [
+          "Deutsch, aber auch Englisch, Arabisch und Tigrinya wären hilfreich."
+        ],
+        "notes": "Can be split per language. Applying the language to SMS is an assumption to confirm."
+      },
+      {
+        "id": "US-11",
+        "epic_id": "E5",
+        "title": "Plain-language texts",
+        "persona": "client",
+        "i_want": "all booking texts to be written in plain language",
+        "so_that": "I can understand them even with limited reading skills",
+        "statement": "As a client, I want all booking texts to be written in plain language, so that I can understand them even with limited reading skills.",
+        "acceptance_criteria": [
+          {
+            "given": "the German interface texts",
+            "when": "they are reviewed before release",
+            "then": "they comply with the plain-language guideline chosen by the social services"
+          },
+          {
+            "given": "a booking step",
+            "when": "it is displayed",
+            "then": "it uses no internal terms such as 'Folgetermin' without explanation"
+          }
+        ],
+        "priority": "Should",
+        "priority_rationale": "Reception asked for language that is as simple as possible, but did not frame it as a hard requirement.",
+        "source_quotes": [
+          "Und möglichst einfache Sprache."
+        ],
+        "notes": "A specific guideline (e.g. Leichte Sprache vs. Einfache Sprache) needs to be chosen."
+      },
+      {
+        "id": "US-12",
+        "epic_id": "E6",
+        "title": "No-show and booking channel statistics",
+        "persona": "head of social services",
+        "i_want": "to see the rate of missed appointments and the share of online versus phone bookings per month",
+        "so_that": "I can check whether the one-year goals are being met",
+        "statement": "As head of social services, I want to see the rate of missed appointments and the share of online versus phone bookings per month, so that I can check whether the one-year goals are being met.",
+        "acceptance_criteria": [
+          {
+            "given": "appointments marked as attended or missed",
+            "when": "I open the monthly statistics",
+            "then": "the share of missed appointments without cancellation is shown per month"
+          },
+          {
+            "given": "appointments created online and by staff",
+            "when": "I open the statistics",
+            "then": "the number of appointments per booking channel is shown per month"
+          }
+        ],
+        "priority": "Could",
+        "priority_rationale": "The success criteria were stated explicitly, but nobody asked for an in-system report, and measurement could be done otherwise.",
+        "source_quotes": [
+          "Halb so viele verpasste Termine und deutlich weniger Anrufe am Empfang.",
+          "Ungefähr jeder fünfte Termin wird nicht wahrgenommen, ohne Absage."
+        ],
+        "notes": "Requires a way to mark attendance. Phone call volume itself is likely measured outside the system."
+      }
+    ],
+    "non_functional_requirements": [
+      {
+        "id": "NFR-1",
+        "category": "Privacy",
+        "requirement": "No SMS (reminders, access links/codes) may reveal that the message relates to the social services, neither in the text nor in the sender ID. Content is limited to time and address.",
+        "source_quotes": [
+          "In der SMS darf nicht stehen, dass es um den Sozialdienst geht.",
+          "Viele schämen sich, und das Handy sieht vielleicht jemand anderes."
+        ]
+      },
+      {
+        "id": "NFR-2",
+        "category": "Security",
+        "requirement": "Client access must protect very sensitive data. A forwarded access link must not allow a third party to view another client's appointments.",
+        "source_quotes": [
+          "Aber es muss sicher sein, es geht um sehr sensible Daten.",
+          "Ich möchte nicht, dass jemand mit einem weitergeleiteten Link fremde Termine sieht."
+        ]
+      },
+      {
+        "id": "NFR-3",
+        "category": "Compliance",
+        "requirement": "The authentication and data handling concept must be reviewed and approved by the social services' data protection advisor before go-live.",
+        "source_quotes": [
+          "Das müssen wir mit unserer Datenschutzberaterin klären."
+        ]
+      },
+      {
+        "id": "NFR-4",
+        "category": "Usability",
+        "requirement": "Client access must not require an E-ID or a password.",
+        "source_quotes": [
+          "Viele haben keine E-ID und vergessen Passwörter."
+        ]
+      },
+      {
+        "id": "NFR-5",
+        "category": "Usability",
+        "requirement": "The client-facing interface must support German, with English, Arabic (right-to-left) and Tigrinya as additional languages.",
+        "source_quotes": [
+          "Deutsch, aber auch Englisch, Arabisch und Tigrinya wären hilfreich."
+        ]
+      },
+      {
+        "id": "NFR-6",
+        "category": "Accessibility",
+        "requirement": "Client-facing texts must be written in plain language.",
+        "source_quotes": [
+          "Und möglichst einfache Sprache."
+        ]
+      },
+      {
+        "id": "NFR-7",
+        "category": "Integration",
+        "requirement": "The system must integrate bidirectionally with the social workers' Outlook calendars as the single source of availability.",
+        "source_quotes": [
+          "Wir arbeiten mit dem Outlook-Kalender.",
+          "Wenn ich in Outlook einen Termin habe, darf online niemand diesen Slot buchen."
+        ]
+      }
+    ],
+    "open_questions": [
+      {
+        "question": "Which access mechanism (SMS link, one-time code, link plus code, or other) does the data protection advisor approve, and how long should a code or link remain valid?",
+        "why_it_matters": "There is a tension between the social worker's wish for simple access and the head of service's concern about forwarded links. This blocks US-7 and all self-service stories.",
+        "ask_whom": "Claudia Meier with the data protection advisor",
+        "related_ids": [
+          "US-7",
+          "NFR-2",
+          "NFR-3"
+        ]
+      },
+      {
+        "question": "The head of service's goal is that clients book appointments online in general, while the social worker says initial consultations must not be freely bookable. How should clients without an assigned social worker obtain an initial consultation: by phone only, or through an online request form that staff assign?",
+        "why_it_matters": "This contradiction between speakers determines the scope of online booking and how much reception load is actually reduced.",
+        "ask_whom": "Claudia Meier and Marco Bianchi",
+        "related_ids": [
+          "US-1",
+          "US-4"
+        ]
+      },
+      {
+        "question": "At what time of day should the reminder SMS be sent, and what happens for clients without a mobile phone number?",
+        "why_it_matters": "'Am Vortag' is not precise enough for testing. Clients without a mobile number would receive no reminder.",
+        "ask_whom": "Lea Huber",
+        "related_ids": [
+          "US-5"
+        ]
+      },
+      {
+        "question": "Is there a deadline (e.g. hours before the appointment) after which online rescheduling or cancellation is no longer allowed?",
+        "why_it_matters": "Needed for testable acceptance criteria and for short-notice slot reuse.",
+        "ask_whom": "Claudia Meier",
+        "related_ids": [
+          "US-2",
+          "US-3"
+        ]
+      },
+      {
+        "question": "How long are follow-up appointments, how far in advance can they be booked, and which Outlook time windows count as bookable working hours?",
+        "why_it_matters": "Slot generation cannot be specified without these values.",
+        "ask_whom": "Marco Bianchi",
+        "related_ids": [
+          "US-1",
+          "US-8"
+        ]
+      },
+      {
+        "question": "Which Outlook/Exchange environment is used (on-premise or Microsoft 365), and what synchronisation delay is acceptable?",
+        "why_it_matters": "This determines integration feasibility and the risk of double bookings.",
+        "ask_whom": "IT of the social services",
+        "related_ids": [
+          "US-8",
+          "US-9",
+          "NFR-7"
+        ]
+      },
+      {
+        "question": "What client data may appear in Outlook entries and SMS, and how long must appointment data and phone numbers be retained or deleted?",
+        "why_it_matters": "Retention and data minimisation are legal constraints that were not discussed.",
+        "ask_whom": "Data protection advisor",
+        "related_ids": [
+          "US-9",
+          "NFR-1",
+          "NFR-3"
+        ]
+      },
+      {
+        "question": "Which accessibility standard (e.g. eCH-0059 / WCAG 2.1 AA) must be met?",
+        "why_it_matters": "Public-sector applications are usually subject to accessibility rules, but none were mentioned.",
+        "ask_whom": "Claudia Meier",
+        "related_ids": [
+          "NFR-6"
+        ]
+      },
+      {
+        "question": "Which additional languages are required for launch, and should SMS texts also be translated?",
+        "why_it_matters": "The languages were called 'helpful', which leaves the release scope unclear.",
+        "ask_whom": "Lea Huber and Claudia Meier",
+        "related_ids": [
+          "US-10",
+          "NFR-5"
+        ]
+      },
+      {
+        "question": "What is the baseline and the target for 'deutlich weniger Anrufe', and how is the current no-show rate measured?",
+        "why_it_matters": "The success criteria need numbers and a baseline to be verifiable.",
+        "ask_whom": "Claudia Meier",
+        "related_ids": [
+          "US-12"
+        ]
+      },
+      {
+        "question": "Should reception staff use the same system to book appointments for phone callers, so that those clients also get SMS reminders?",
+        "why_it_matters": "This affects whether reminders cover all appointments and reduce no-shows.",
+        "ask_whom": "Lea Huber",
+        "related_ids": [
+          "US-5"
+        ]
+      },
+      {
+        "question": "May a client book with another social worker when their own is absent for a longer period?",
+        "why_it_matters": "This defines the booking rules for follow-up appointments.",
+        "ask_whom": "Marco Bianchi",
+        "related_ids": [
+          "US-1"
+        ]
+      }
+    ],
+    "assumptions": [
+      "Clients who book online are already known to the social services and have an assigned social worker and a stored mobile phone number.",
+      "An external SMS gateway provider will be used to send SMS.",
+      "Social workers' calendars are hosted on a Microsoft Exchange / Microsoft 365 environment that offers an API.",
+      "The appointment address in the SMS (e.g. Bahnhofstrasse 12) is acceptable because it does not reveal the social services.",
+      "Staff need a way to record whether an appointment was attended, so that no-shows can be measured."
+    ],
+    "out_of_scope": [
+      "Free online booking of initial consultations (90 minutes) by clients.",
+      "Login via E-ID or username and password for clients.",
+      "E-mail as the primary reminder channel.",
+      "Management of walk-in visits at the reception counter."
+    ]
+  },
+  "meta": {
+    "model": "claude-opus-5-5",
+    "effort": "medium",
+    "seconds": 130.75564341701102,
+    "cost": 0.237072,
+    "tokens": 14824,
+    "fell_back": false
+  }
+}

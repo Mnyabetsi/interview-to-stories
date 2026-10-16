@@ -1,0 +1,129 @@
+[
+  {
+    "id": "R1",
+    "kind": "requirement",
+    "expected": "Clients can book, reschedule and cancel appointments online.",
+    "verdict": "covered",
+    "evidence": [
+      "E1",
+      "US-1",
+      "US-2",
+      "US-3"
+    ],
+    "explanation": "The backlog has separate stories for booking, rescheduling and cancelling appointments online."
+  },
+  {
+    "id": "R2",
+    "kind": "requirement",
+    "expected": "Follow-up appointments can be booked online with the client's own social worker.",
+    "verdict": "covered",
+    "evidence": [
+      "US-1"
+    ],
+    "explanation": "US-1 limits online booking to follow-up slots with the client's assigned social worker."
+  },
+  {
+    "id": "R3",
+    "kind": "requirement",
+    "expected": "First consultations (90 minutes) are not freely bookable and must be assigned to the right specialist.",
+    "verdict": "covered",
+    "evidence": [
+      "US-4",
+      "X-1"
+    ],
+    "explanation": "Initial consultations are excluded from free online booking and get a 90-minute slot with the assigned specialist."
+  },
+  {
+    "id": "R4",
+    "kind": "requirement",
+    "expected": "Clients receive an SMS reminder the day before the appointment.",
+    "verdict": "covered",
+    "evidence": [
+      "E2",
+      "US-5"
+    ],
+    "explanation": "US-5 sends an SMS reminder the day before the appointment."
+  },
+  {
+    "id": "R5",
+    "kind": "nfr",
+    "expected": "The SMS must not reveal that it is about social services; it only contains the time and address.",
+    "verdict": "covered",
+    "evidence": [
+      "US-6",
+      "NFR-1"
+    ],
+    "explanation": "SMS text and sender must not reveal the social services, and content is limited to time and address."
+  },
+  {
+    "id": "R6",
+    "kind": "requirement",
+    "expected": "Clients can access their appointments without a classic password or E-ID, e.g. via a link or code sent by SMS.",
+    "verdict": "covered",
+    "evidence": [
+      "US-7",
+      "NFR-4",
+      "E3"
+    ],
+    "explanation": "Access works via an SMS link or code, without a password or E-ID."
+  },
+  {
+    "id": "R7",
+    "kind": "nfr",
+    "expected": "Access must be secure: a forwarded link must not let someone else see another person's appointments.",
+    "verdict": "covered",
+    "evidence": [
+      "NFR-2",
+      "US-7"
+    ],
+    "explanation": "A forwarded link must not let a third party see another client's appointments."
+  },
+  {
+    "id": "R8",
+    "kind": "requirement",
+    "expected": "Social workers' availability comes from their Outlook calendar; slots that are busy in Outlook cannot be booked, with no second calendar to maintain.",
+    "verdict": "covered",
+    "evidence": [
+      "US-8",
+      "E4",
+      "NFR-7"
+    ],
+    "explanation": "Time occupied in Outlook blocks online slots, and Outlook stays the only calendar."
+  },
+  {
+    "id": "R9",
+    "kind": "nfr",
+    "expected": "Available in German, English, Arabic and Tigrinya, in plain language.",
+    "verdict": "covered",
+    "evidence": [
+      "US-10",
+      "US-11",
+      "NFR-5",
+      "NFR-6"
+    ],
+    "explanation": "All four languages and plain-language texts are required."
+  },
+  {
+    "id": "Q1",
+    "kind": "open_question",
+    "expected": "The secure login approach needs to be clarified with the data protection advisor.",
+    "verdict": "covered",
+    "evidence": [
+      "OQ-1",
+      "NFR-3"
+    ],
+    "explanation": "The access mechanism is an open question to be decided with the data protection advisor."
+  },
+  {
+    "id": "G1",
+    "kind": "goal",
+    "expected": "Success: half as many missed appointments and clearly fewer phone calls to reception.",
+    "verdict": "covered",
+    "evidence": [
+      "E6",
+      "US-12",
+      "OQ-10"
+    ],
+    "explanation": "The success goals of halving missed appointments and reducing calls are stated and tracked."
+  }
+]
