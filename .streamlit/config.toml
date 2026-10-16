@@ -1,0 +1,32 @@
+# Shared settings for both themes. Viewers get the theme that matches their system setting
+# and can switch between light and dark in the app menu (‚ãÆ, top right).
+[theme]
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+headingFont = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+headingFontWeights = [700, 650, 600]
+baseRadius = "0.75rem"
+
+[theme.light]
+primaryColor = "#3651D4"
+backgroundColor = "#FAFAF7"
+secondaryBackgroundColor = "#F0F0EA"
+textColor = "#1D2433"
+borderColor = "#E3E2DB"
+linkColor = "#3651D4"
+codeBackgroundColor = "#F3F4F8"
+
+[theme.dark]
+primaryColor = "#8C9BFF"
+backgroundColor = "#11141B"
+secondaryBackgroundColor = "#1A1F2A"
+textColor = "#E6E8EE"
+borderColor = "#2B3242"
+linkColor = "#A3AFFF"
+codeBackgroundColor = "#1A1F2A"
+
+[client]
+# Shows the viewer menu (print, theme switch) but hides developer options.
+toolbarMode = "viewer"
+
+[browser]
+gatherUsageStats = false
