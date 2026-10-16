@@ -15,8 +15,8 @@ from quality import BacklogReport, check_backlog
 from settings import secret
 
 # Shown in the footer. Fill in to put your name on the app.
-AUTHOR_NAME = ""
-AUTHOR_LINKS = {"LinkedIn": "", "GitHub": ""}
+AUTHOR_NAME = "Lerato Manala"
+AUTHOR_LINKS = {"LinkedIn": "https://www.linkedin.com/in/lerato-manala-96a81b133/", "GitHub": "https://github.com/Mnyabetsi/interview-to-stories"}
 
 SAMPLES_DIR = Path(__file__).parent / "samples"
 OUTPUTS_DIR = SAMPLES_DIR / "outputs"
