@@ -1,0 +1,70 @@
+Stakeholder interview: Digital absence reporting for schools
+Primary school pilot in the Canton of St. Gallen, Lindenhof school (fictional)
+Participants: Interviewer (Product Owner), Thomas Brunner (Principal, Lindenhof school), Aylin Demir (Class Teacher, 4th grade), Peter Graf (Parent Council representative)
+Note: Synthetic transcript created for a portfolio project. The school, people and statements are fictional.
+
+Interviewer: Let's start with today's process. How do parents report that their child is sick?
+
+Aylin Demir: Mostly they call the school office between seven and eight in the morning, or they send me a message on my private phone, which I really don't like. Sometimes the child just doesn't show up and nobody told us. Then I have to start calling around during my lesson.
+
+Thomas Brunner: That's actually our biggest concern. If a child doesn't arrive and we don't know why, we have a duty of care. We need to reach the parents within the first hour of school.
+
+Interviewer: So unreported absences are the critical case.
+
+Thomas Brunner: Absolutely. Sick children are not the problem. Children who are missing without anybody knowing, that's the risk.
+
+Peter Graf: From the parents' side, calling at 7:15 when the office line is busy is frustrating. Many of us start work early. I'd like to report it on my phone in a minute, ideally the evening before if I already know.
+
+Interviewer: What information do you need when a child is reported absent?
+
+Aylin Demir: Which child, which days, and roughly the reason. Sick, doctor's appointment, family reason. I don't need medical details. Actually I shouldn't get medical details.
+
+Thomas Brunner: Right. Health data is sensitive. We don't want parents writing "my daughter has a stomach infection" into a free text field that ten people can read.
+
+Interviewer: Who needs to see the absences?
+
+Aylin Demir: The class teacher, obviously. And the subject teachers who have the child that day, like the sports teacher. The school office needs an overview of all absences.
+
+Thomas Brunner: And at the end of the semester the number of absences goes on the report card. Today the teachers count them by hand from their lists. That's error-prone.
+
+Interviewer: Are there different types of absences?
+
+Thomas Brunner: Yes. Sickness and accidents are reported after the fact. Then there are planned absences, like a family wedding, which parents have to request in advance. Up to two days the class teacher can approve. Longer than that, I have to approve as principal.
+
+Peter Graf: And honestly, right now nobody knows the rules. I'd like the app to tell me who needs to approve and whether it was approved.
+
+Interviewer: What about families who don't use smartphones?
+
+Peter Graf: There are families who don't speak German well. At our school we have more than twenty languages. If the app is only in German, they won't use it.
+
+Thomas Brunner: We can't translate into twenty languages, but at least German, English, and maybe Albanian, Portuguese and Tigrinya, those are our biggest groups. And phone calls must still be possible. Not everyone will use an app.
+
+Aylin Demir: If a parent calls the office, the office should enter it in the same system, so I see everything in one place.
+
+Interviewer: How should teachers record attendance?
+
+Aylin Demir: At the start of each lesson I'd check who's there. It has to work on my tablet in under a minute, otherwise I won't do it with 24 kids waiting.
+
+Thomas Brunner: And if a child is marked absent but there's no report from the parents, the school office should be alerted so they can call the family.
+
+Interviewer: Do parents get notified automatically?
+
+Peter Graf: I'd want a notification if my child doesn't arrive. That would give me peace of mind.
+
+Thomas Brunner: Careful. With divorced parents, we sometimes have legal restrictions on who gets information. The system must respect custody arrangements. We get those from the canton's student database.
+
+Interviewer: Is the student database something we'd integrate with?
+
+Thomas Brunner: Yes, the canton's student administration system has all the classes, students and parents. We should not enter students manually. The IT department of the canton would need to tell you how the interface works.
+
+Interviewer: Anything about data retention?
+
+Thomas Brunner: Absence data for the report card has to be kept, but the daily details, I'd guess they should be deleted after the school year. Please check that with the canton's data protection officer.
+
+Interviewer: What would make this a success?
+
+Thomas Brunner: That we know about every missing child within thirty minutes of the first lesson.
+
+Aylin Demir: That I don't get WhatsApp messages at 6 am anymore.
+
+Peter Graf: That reporting takes less than a minute and I get a confirmation.

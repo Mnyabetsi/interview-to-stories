@@ -1,0 +1,905 @@
+{
+  "backlog": {
+    "summary": "First backlog draft for the online building permit portal of the Municipality of Seeberg (fictional). Today applications arrive on paper in three printed copies, roughly six out of ten are incomplete, and the permit clerk receives about ten status calls a day. The council wants a first version live by next summer that covers online submission and status tracking. Integration with the canton can follow later. Key constraints are data storage in Switzerland, logging of every dossier access for legal proceedings, German and English language versions, compliance with the federal accessibility standard, retention for the life of the building, and electronic delivery of rulings only with the applicant's consent. One open conflict needs a council decision: whether paper submissions remain possible (Daniel Rossi) or the process becomes digital-only with counter scanning (Monika Keller).",
+    "personas": [
+      {
+        "name": "Architect / builder (professional applicant)",
+        "description": "Submits about 80% of applications on behalf of owners. Already produces plans as PDF, sometimes up to 200 MB, and will fall back to paper if uploading is slow."
+      },
+      {
+        "name": "Private homeowner (applicant)",
+        "description": "Submits small projects such as garden sheds or solar panels. Often older and not comfortable with computers. Wants to know the status of the application."
+      },
+      {
+        "name": "Permit clerk",
+        "description": "Checks applications for completeness, requests missing documents, answers status calls and coordinates reviews with other offices (Daniel Rossi)."
+      },
+      {
+        "name": "Head of Building Department",
+        "description": "Owns the digitalisation goal, decides on process questions together with the council and controls what applicants may see (Monika Keller)."
+      },
+      {
+        "name": "Fire protection reviewer",
+        "description": "External reviewer from the regional authority, not the municipality. Reviews plans and gives a statement, currently taking three weeks on average."
+      },
+      {
+        "name": "Counter staff",
+        "description": "Municipal staff at the counter who may digitise paper applications from applicants such as older homeowners, if paper submission remains allowed."
+      },
+      {
+        "name": "IT coordinator",
+        "description": "Responsible for infrastructure, data protection, access control and audit logging (Sandra Frei)."
+      }
+    ],
+    "epics": [
+      {
+        "id": "E1",
+        "title": "Online application submission",
+        "goal": "Applicants can submit a complete building permit application with all documents online instead of on paper."
+      },
+      {
+        "id": "E2",
+        "title": "Completeness checking",
+        "goal": "Reduce incomplete applications and the clerk's time spent writing completeness letters, with the target of cutting them in half."
+      },
+      {
+        "id": "E3",
+        "title": "Status tracking",
+        "goal": "Applicants can see the status of their application online, which reduces status phone calls, without exposing internal comments."
+      },
+      {
+        "id": "E4",
+        "title": "Review by other offices",
+        "goal": "Internal and external offices such as fire protection review plans and submit statements directly in the system instead of by internal mail."
+      },
+      {
+        "id": "E5",
+        "title": "Decision and electronic delivery",
+        "goal": "Formal rulings can be delivered electronically to applicants who consent to electronic delivery."
+      },
+      {
+        "id": "E6",
+        "title": "Access control, audit and paper channel",
+        "goal": "Secure role-based access, a complete audit trail for appeals, and a defined approach for paper submissions."
+      }
+    ],
+    "stories": [
+      {
+        "id": "US-1",
+        "epic_id": "E1",
+        "title": "Submit application online",
+        "persona": "architect",
+        "i_want": "to fill in the building permit application form and submit it online",
+        "so_that": "I no longer have to send the application and plans in three printed copies",
+        "statement": "As an architect, I want to fill in the building permit application form and submit it online, so that I no longer have to send the application and plans in three printed copies.",
+        "acceptance_criteria": [
+          {
+            "given": "an architect has completed all mandatory fields of the application form and attached all required documents",
+            "when": "they click submit",
+            "then": "the application is stored with a unique reference number and the status \"received\""
+          },
+          {
+            "given": "an application has been submitted",
+            "when": "the submission is completed",
+            "then": "the applicant sees a confirmation showing the reference number and the submission date and time"
+          },
+          {
+            "given": "a mandatory form field is empty",
+            "when": "the architect tries to submit",
+            "then": "submission is blocked and the empty field is identified by name"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "The council explicitly requires online submission in the first version due next summer.",
+        "source_quotes": [
+          "Our goal is that applications can be submitted fully online.",
+          "but submission online and status tracking should be there."
+        ],
+        "notes": "Foundation for US-2 to US-5. Depends on the applicant login approach (see open question on authentication)."
+      },
+      {
+        "id": "US-2",
+        "epic_id": "E1",
+        "title": "Upload large PDF plans",
+        "persona": "architect",
+        "i_want": "to upload plan documents as PDF files of up to 200 MB each",
+        "so_that": "I can submit the plans I already produce without splitting or printing them",
+        "statement": "As an architect, I want to upload plan documents as PDF files of up to 200 MB each, so that I can submit the plans I already produce without splitting or printing them.",
+        "acceptance_criteria": [
+          {
+            "given": "an architect has a 200 MB PDF plan",
+            "when": "they upload it to an application",
+            "then": "the upload completes and the file is listed in the application with its name and size"
+          },
+          {
+            "given": "an architect selects a file that is not a PDF for a plan document",
+            "when": "they try to upload it",
+            "then": "the upload is rejected with a message stating that plans must be PDF files"
+          },
+          {
+            "given": "an upload is in progress",
+            "when": "the architect views the upload",
+            "then": "a progress indicator shows the percentage uploaded"
+          },
+          {
+            "given": "an upload is interrupted",
+            "when": "the upload fails",
+            "then": "the architect is informed that the upload failed and can restart it without losing the other documents already uploaded"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "Without large-file upload, online submission does not work, and Daniel warned that architects will keep sending paper if uploads are slow.",
+        "source_quotes": [
+          "Plans come as PDF from the architects anyway.",
+          "Some files are huge, 200 megabytes is not unusual.",
+          "If uploading plans takes forever, architects will just keep sending paper."
+        ],
+        "notes": "The maximum file size and the upload time target are open questions. Storage must respect NFR-1 (data in Switzerland)."
+      },
+      {
+        "id": "US-3",
+        "epic_id": "E2",
+        "title": "See missing documents before submission",
+        "persona": "architect",
+        "i_want": "to see a checklist of the required documents and which of them are still missing before I submit",
+        "so_that": "I can complete the application without receiving a completeness letter",
+        "statement": "As an architect, I want to see a checklist of the required documents and which of them are still missing before I submit, so that I can complete the application without receiving a completeness letter.",
+        "acceptance_criteria": [
+          {
+            "given": "an application is in draft",
+            "when": "the architect opens the document section",
+            "then": "a checklist shows the application form, site plan, floor plans, sections and elevations, each marked as provided or missing"
+          },
+          {
+            "given": "a required document is missing",
+            "when": "the architect tries to submit",
+            "then": "submission is blocked and every missing document is listed by name"
+          },
+          {
+            "given": "all required documents are provided",
+            "when": "the architect views the checklist",
+            "then": "all items are marked as provided and submission is enabled"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "Daniel calls this the biggest win, because six out of ten applications are incomplete today.",
+        "source_quotes": [
+          "For me the biggest win would be if the system told the architect what is missing before they submit.",
+          "I'd say six out of ten applications are missing something.",
+          "The application form, site plan, floor plans, sections and elevations, the neighbour consent if it's close to the property line, and for larger projects an energy certificate."
+        ],
+        "notes": "Conditional documents are split out into US-4 (neighbour consent) and US-5 (energy certificate). Daniel also named missing signatures and the wrong plan scale; how these are checked online is an open question."
+      },
+      {
+        "id": "US-4",
+        "epic_id": "E2",
+        "title": "Require neighbour consent near property line",
+        "persona": "permit clerk",
+        "i_want": "the system to block submission without a neighbour consent when the project is close to the property line",
+        "so_that": "I no longer have to chase missing neighbour consents by letter",
+        "statement": "As a permit clerk, I want the system to block submission without a neighbour consent when the project is close to the property line, so that I no longer have to chase missing neighbour consents by letter.",
+        "acceptance_criteria": [
+          {
+            "given": "the applicant has indicated that the project is close to the property line",
+            "when": "they try to submit without a neighbour consent document",
+            "then": "submission is blocked and the message names the neighbour consent as missing"
+          },
+          {
+            "given": "the applicant has indicated that the project is not close to the property line",
+            "when": "they submit without a neighbour consent",
+            "then": "submission is not blocked because of the neighbour consent"
+          },
+          {
+            "given": "the project is close to the property line and a neighbour consent is attached",
+            "when": "the applicant submits",
+            "then": "the submission succeeds"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "Daniel says this rule alone would save him hours every week.",
+        "source_quotes": [
+          "If the form simply doesn't let them submit without the neighbour consent, I save hours every week.",
+          "the neighbour consent if it's close to the property line"
+        ],
+        "notes": "The rule defining 'close to the property line' must be clarified (see open questions)."
+      },
+      {
+        "id": "US-5",
+        "epic_id": "E2",
+        "title": "Require energy certificate for larger projects",
+        "persona": "permit clerk",
+        "i_want": "the system to require an energy certificate for larger projects before submission",
+        "so_that": "larger projects are not submitted without it",
+        "statement": "As a permit clerk, I want the system to require an energy certificate for larger projects before submission, so that larger projects are not submitted without it.",
+        "acceptance_criteria": [
+          {
+            "given": "the project meets the defined criteria for a larger project",
+            "when": "the applicant tries to submit without an energy certificate",
+            "then": "submission is blocked and the energy certificate is listed as missing"
+          },
+          {
+            "given": "the project does not meet the criteria for a larger project",
+            "when": "the applicant submits without an energy certificate",
+            "then": "submission is not blocked because of the energy certificate"
+          }
+        ],
+        "priority": "Should",
+        "priority_rationale": "Daniel names it as a required document, but the threshold for a larger project is not yet defined.",
+        "source_quotes": [
+          "and for larger projects an energy certificate"
+        ],
+        "notes": "Blocked until the criteria for a 'larger project' are defined."
+      },
+      {
+        "id": "US-6",
+        "epic_id": "E2",
+        "title": "Mark application as complete or incomplete",
+        "persona": "permit clerk",
+        "i_want": "to review a submitted dossier online and record whether it is complete",
+        "so_that": "I can do the completeness check without handling paper copies",
+        "statement": "As a permit clerk, I want to review a submitted dossier online and record whether it is complete, so that I can do the completeness check without handling paper copies.",
+        "acceptance_criteria": [
+          {
+            "given": "an application has the status \"received\"",
+            "when": "the clerk opens it",
+            "then": "the clerk sees all form data and can open every uploaded document"
+          },
+          {
+            "given": "the clerk has checked the dossier",
+            "when": "they mark it as complete",
+            "then": "the status changes to \"in review\" and the change is logged with the clerk's name and a timestamp"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "The completeness check is where most of the clerk's time goes, and online submission is useless without an online way to process it.",
+        "source_quotes": [
+          "Daniel checks it for completeness",
+          "And the completeness check is where most of my time goes."
+        ],
+        "notes": "Depends on US-1."
+      },
+      {
+        "id": "US-7",
+        "epic_id": "E2",
+        "title": "Request additional documents online",
+        "persona": "permit clerk",
+        "i_want": "to request specific missing documents from the applicant through the portal",
+        "so_that": "I do not have to write a paper letter and wait for postal replies",
+        "statement": "As a permit clerk, I want to request specific missing documents from the applicant through the portal, so that I do not have to write a paper letter and wait for postal replies.",
+        "acceptance_criteria": [
+          {
+            "given": "the clerk finds that a document is missing",
+            "when": "they send a request naming the missing documents",
+            "then": "the application status changes to \"additional documents needed\" and the applicant sees the list of requested documents"
+          },
+          {
+            "given": "the status is \"additional documents needed\"",
+            "when": "the applicant uploads the requested documents and resubmits",
+            "then": "the clerk sees the newly uploaded documents in the dossier"
+          }
+        ],
+        "priority": "Should",
+        "priority_rationale": "It directly addresses the two-week letter cycle, but stakeholders only explicitly required submission and status tracking for the first version.",
+        "source_quotes": [
+          "Then I write a letter, we wait two weeks, and the clock starts again.",
+          "If I could cut the completeness letters in half, I'd be happy."
+        ],
+        "notes": "Whether an online request is legally equivalent to a letter, including its deadline effects, must be clarified."
+      },
+      {
+        "id": "US-8",
+        "epic_id": "E3",
+        "title": "View application status online",
+        "persona": "applicant",
+        "i_want": "to see the current status of my application online",
+        "so_that": "I do not have to call the building department to ask",
+        "statement": "As an applicant, I want to see the current status of my application online, so that I do not have to call the building department to ask.",
+        "acceptance_criteria": [
+          {
+            "given": "an applicant has submitted an application",
+            "when": "they open their application in the portal",
+            "then": "they see exactly one of the statuses \"received\", \"in review\", \"additional documents needed\" or \"decision made\""
+          },
+          {
+            "given": "a clerk changes the status of an application",
+            "when": "the applicant next opens their application",
+            "then": "the new status and the date of the change are shown"
+          },
+          {
+            "given": "a user is not the applicant or an authorised representative of an application",
+            "when": "they try to open that application",
+            "then": "access is denied"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "Status tracking is explicitly required in the first version, and it addresses about ten status calls a day.",
+        "source_quotes": [
+          "I get maybe ten calls a day just asking \"what's the status?\"",
+          "If they could see the status online, that would help a lot.",
+          "A status like \"received\", \"in review\", \"additional documents needed\", \"decision made\"."
+        ],
+        "notes": "Status changes are made in US-6, US-7 and US-14. Notifications on status change were not discussed (see assumptions)."
+      },
+      {
+        "id": "US-9",
+        "epic_id": "E3",
+        "title": "Keep internal comments hidden from applicants",
+        "persona": "Head of Building Department",
+        "i_want": "internal comments and office statements to be hidden from applicants",
+        "so_that": "concerns, for example from fire protection, can be discussed internally before the applicant is informed",
+        "statement": "As the Head of Building Department, I want internal comments and office statements to be hidden from applicants, so that concerns, for example from fire protection, can be discussed internally before the applicant is informed.",
+        "acceptance_criteria": [
+          {
+            "given": "a reviewer or clerk has added an internal comment to a dossier",
+            "when": "the applicant views their application",
+            "then": "the comment is not visible to the applicant"
+          },
+          {
+            "given": "an internal comment exists",
+            "when": "the applicant requests the application data through any portal page or download",
+            "then": "the internal comment is not included"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "Monika made this a condition of showing status online.",
+        "source_quotes": [
+          "If the fire protection office has concerns, we don't want the applicant to see internal comments before we've discussed them.",
+          "So applicants should see the status, but not internal comments."
+        ],
+        "notes": "Ships together with US-8."
+      },
+      {
+        "id": "US-10",
+        "epic_id": "E4",
+        "title": "Assign dossier to another office for review",
+        "persona": "permit clerk",
+        "i_want": "to assign a dossier to fire protection, environment or another office for review in the system",
+        "so_that": "I no longer copy plans and send them by internal mail",
+        "statement": "As a permit clerk, I want to assign a dossier to fire protection, environment or another office for review in the system, so that I no longer copy plans and send them by internal mail.",
+        "acceptance_criteria": [
+          {
+            "given": "a dossier is complete",
+            "when": "the clerk assigns it to the fire protection office",
+            "then": "the fire protection reviewers can see the dossier in their review list"
+          },
+          {
+            "given": "a dossier has been assigned to one office",
+            "when": "a reviewer from a different, unassigned office logs in",
+            "then": "that reviewer cannot see the dossier"
+          }
+        ],
+        "priority": "Should",
+        "priority_rationale": "Stakeholders described this as valuable, but it was not listed among the first-version must-haves.",
+        "source_quotes": [
+          "We copy the plans and send them by internal mail.",
+          "then it goes around to the different offices: fire protection, environment, sometimes the canton."
+        ],
+        "notes": "Depends on US-12 (external access with roles). Cantonal routing is out of scope for now."
+      },
+      {
+        "id": "US-11",
+        "epic_id": "E4",
+        "title": "Review plans and submit statement in the system",
+        "persona": "fire protection reviewer",
+        "i_want": "to review the plans and submit my statement directly in the system",
+        "so_that": "I do not need paper copies and my statement reaches the building department without internal mail",
+        "statement": "As a fire protection reviewer, I want to review the plans and submit my statement directly in the system, so that I do not need paper copies and my statement reaches the building department without internal mail.",
+        "acceptance_criteria": [
+          {
+            "given": "a dossier has been assigned to the fire protection office",
+            "when": "the reviewer opens it",
+            "then": "they can view and download all plan documents"
+          },
+          {
+            "given": "the reviewer has written a statement",
+            "when": "they submit it",
+            "then": "the statement is attached to the dossier, marked as internal, and visible to the permit clerk"
+          },
+          {
+            "given": "a statement has been submitted",
+            "when": "the applicant views the application",
+            "then": "the statement is not visible to the applicant"
+          }
+        ],
+        "priority": "Should",
+        "priority_rationale": "Daniel would welcome it given the average three-week review time, but it is not part of the first-version scope Monika defined.",
+        "source_quotes": [
+          "It would be great if they could review directly in the system and leave their statement there.",
+          "Fire protection takes on average three weeks."
+        ],
+        "notes": "Depends on US-10, US-12 and US-9."
+      },
+      {
+        "id": "US-12",
+        "epic_id": "E6",
+        "title": "External reviewer login with role",
+        "persona": "IT coordinator",
+        "i_want": "to give reviewers from external authorities a personal login with a role limited to assigned dossiers",
+        "so_that": "the regional fire protection office can work in the system without access to unrelated data",
+        "statement": "As the IT coordinator, I want to give reviewers from external authorities a personal login with a role limited to assigned dossiers, so that the regional fire protection office can work in the system without access to unrelated data.",
+        "acceptance_criteria": [
+          {
+            "given": "the IT coordinator creates an account for an external reviewer with the role \"fire protection reviewer\"",
+            "when": "the reviewer logs in",
+            "then": "they see only the dossiers assigned to their office"
+          },
+          {
+            "given": "an external reviewer account has been deactivated",
+            "when": "the reviewer tries to log in",
+            "then": "login is refused"
+          },
+          {
+            "given": "an external reviewer is logged in",
+            "when": "they try to change an application's status",
+            "then": "the action is not permitted"
+          }
+        ],
+        "priority": "Should",
+        "priority_rationale": "It is required for external reviews, which stakeholders placed after online submission and status tracking.",
+        "source_quotes": [
+          "The fire protection office is part of the regional authority, not the municipality, so they'd need external access.",
+          "That means we need proper login and roles."
+        ],
+        "notes": "Prerequisite for US-11. The authentication method is an open question."
+      },
+      {
+        "id": "US-13",
+        "epic_id": "E6",
+        "title": "Show dossier access history for appeals",
+        "persona": "Head of Building Department",
+        "i_want": "to view and export the complete access and change history of a dossier",
+        "so_that": "in an appeal we can prove who saw and changed what",
+        "statement": "As the Head of Building Department, I want to view and export the complete access and change history of a dossier, so that in an appeal we can prove who saw and changed what.",
+        "acceptance_criteria": [
+          {
+            "given": "a user has opened a dossier",
+            "when": "the access history of that dossier is viewed",
+            "then": "an entry shows the user, the date and time, and the action \"viewed\""
+          },
+          {
+            "given": "a user has changed data or a document in a dossier",
+            "when": "the access history is viewed",
+            "then": "an entry shows the user, the date and time, and what was changed"
+          },
+          {
+            "given": "an authorised user requests an export of the history",
+            "when": "the export is generated",
+            "then": "a file containing all entries of that dossier is produced"
+          },
+          {
+            "given": "any user, including administrators",
+            "when": "they try to edit or delete a history entry",
+            "then": "the action is not possible"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "Sandra states this is legally necessary because building permits are legal proceedings.",
+        "source_quotes": [
+          "And every access to a dossier should be logged, because these are legal proceedings.",
+          "If there's an appeal, we must be able to show who saw and changed what."
+        ],
+        "notes": "Implements NFR-2. The roles allowed to view and export the history need to be confirmed."
+      },
+      {
+        "id": "US-14",
+        "epic_id": "E5",
+        "title": "Consent to electronic delivery",
+        "persona": "applicant",
+        "i_want": "to give or withhold my consent to electronic delivery of the decision",
+        "so_that": "I receive the ruling through the channel I agreed to",
+        "statement": "As an applicant, I want to give or withhold my consent to electronic delivery of the decision, so that I receive the ruling through the channel I agreed to.",
+        "acceptance_criteria": [
+          {
+            "given": "an applicant is submitting an application",
+            "when": "they reach the delivery options",
+            "then": "they can choose between electronic delivery and registered mail, with no option preselected"
+          },
+          {
+            "given": "an applicant has given consent",
+            "when": "the consent is stored",
+            "then": "the consent, the date and time and the applicant's identity are recorded in the dossier"
+          },
+          {
+            "given": "an applicant has not given consent",
+            "when": "the clerk views the dossier",
+            "then": "the dossier shows that the decision must be sent by registered mail"
+          }
+        ],
+        "priority": "Should",
+        "priority_rationale": "Monika called consent legally important, but electronic delivery was not listed for the first version.",
+        "source_quotes": [
+          "In the future it should be possible to deliver it electronically, but only if the applicant agrees to electronic delivery.",
+          "Legally that's important."
+        ],
+        "notes": "Prerequisite for US-15. Whether consent can be withdrawn later needs to be clarified."
+      },
+      {
+        "id": "US-15",
+        "epic_id": "E5",
+        "title": "Deliver ruling electronically",
+        "persona": "permit clerk",
+        "i_want": "to deliver the signed ruling electronically to applicants who have consented",
+        "so_that": "we no longer need registered mail for these applicants",
+        "statement": "As a permit clerk, I want to deliver the signed ruling electronically to applicants who have consented, so that we no longer need registered mail for these applicants.",
+        "acceptance_criteria": [
+          {
+            "given": "the applicant has consented to electronic delivery and the ruling is signed",
+            "when": "the clerk delivers the ruling",
+            "then": "the applicant can download the ruling in the portal and the status changes to \"decision made\""
+          },
+          {
+            "given": "the applicant has not consented",
+            "when": "the clerk tries to deliver electronically",
+            "then": "electronic delivery is blocked"
+          },
+          {
+            "given": "a ruling has been delivered electronically",
+            "when": "the delivery is completed",
+            "then": "the date and time of delivery are recorded in the dossier"
+          }
+        ],
+        "priority": "Should",
+        "priority_rationale": "It is described as a future capability rather than part of the first version.",
+        "source_quotes": [
+          "The decision is a formal ruling, signed by the council.",
+          "Today it's sent by registered mail."
+        ],
+        "notes": "Depends on US-14. The legal requirements for an electronic signature and proof of delivery must be clarified."
+      },
+      {
+        "id": "US-16",
+        "epic_id": "E1",
+        "title": "Use the portal in German or English",
+        "persona": "applicant",
+        "i_want": "to switch the portal between German and English",
+        "so_that": "international residents can apply without language barriers",
+        "statement": "As an applicant, I want to switch the portal between German and English, so that international residents can apply without language barriers.",
+        "acceptance_criteria": [
+          {
+            "given": "an applicant is on any portal page",
+            "when": "they select English",
+            "then": "all labels, instructions, validation messages and status names are shown in English"
+          },
+          {
+            "given": "an applicant has selected a language",
+            "when": "they navigate to another page",
+            "then": "the selected language is kept"
+          }
+        ],
+        "priority": "Must",
+        "priority_rationale": "The council explicitly wants the portal in German and English, and both languages are cheaper to build in from the start.",
+        "source_quotes": [
+          "The council wants the portal in German and English.",
+          "Seeberg is German-speaking, but we have many international residents who work for companies in the St. Gallen region."
+        ],
+        "notes": "Whether formal documents such as rulings must also be available in English is an open question."
+      },
+      {
+        "id": "US-17",
+        "epic_id": "E6",
+        "title": "Digitise paper applications at the counter",
+        "persona": "counter staff",
+        "i_want": "to scan a paper application and record it in the system on behalf of the applicant",
+        "so_that": "applicants who cannot use the portal are served while the internal process stays digital",
+        "statement": "As counter staff, I want to scan a paper application and record it in the system on behalf of the applicant, so that applicants who cannot use the portal are served while the internal process stays digital.",
+        "acceptance_criteria": [
+          {
+            "given": "an applicant hands in a paper application at the counter",
+            "when": "the counter staff enter the form data and upload the scanned documents",
+            "then": "an application is created with the status \"received\" and is marked as received on paper"
+          },
+          {
+            "given": "a paper application has been digitised",
+            "when": "the clerk processes it",
+            "then": "it follows the same workflow as an online application"
+          }
+        ],
+        "priority": "Could",
+        "priority_rationale": "Stakeholders disagree on whether paper remains accepted, and Monika must decide this with the council.",
+        "source_quotes": [
+          "That's why I think we should still accept paper.",
+          "Maybe the counter staff scan it in for him, but the process behind it should be digital only.",
+          "If we keep both channels forever, we never get rid of the double work."
+        ],
+        "notes": "Blocked by the council decision on the paper channel. Re-prioritise once that decision is made."
+      },
+      {
+        "id": "US-18",
+        "epic_id": "E6",
+        "title": "Track share of online applications",
+        "persona": "Head of Building Department",
+        "i_want": "to see how many applications were submitted online versus on paper per month",
+        "so_that": "I can show the council the progress on digitalisation",
+        "statement": "As the Head of Building Department, I want to see how many applications were submitted online versus on paper per month, so that I can show the council the progress on digitalisation.",
+        "acceptance_criteria": [
+          {
+            "given": "applications have been received through both channels",
+            "when": "the Head of Building Department opens the report for a month",
+            "then": "the number of online and paper applications for that month is shown"
+          },
+          {
+            "given": "applications received additional-documents requests",
+            "when": "the report is opened",
+            "then": "the number of applications that received at least one request is shown per month"
+          }
+        ],
+        "priority": "Could",
+        "priority_rationale": "It supports the success measures stakeholders named, but nobody requested a report directly.",
+        "source_quotes": [
+          "Most applications come in online, Daniel spends less time chasing missing documents, and we get fewer phone calls.",
+          "The council wants to show progress on digitalisation this year"
+        ],
+        "notes": "Depends on US-7 and US-17 for its data. Measuring phone calls is outside the system."
+      },
+      {
+        "id": "US-19",
+        "epic_id": "E4",
+        "title": "Integration with the canton",
+        "persona": "permit clerk",
+        "i_want": "to send dossiers that require cantonal involvement to the canton electronically",
+        "so_that": "cantonal reviews no longer need paper",
+        "statement": "As a permit clerk, I want to send dossiers that require cantonal involvement to the canton electronically, so that cantonal reviews no longer need paper.",
+        "acceptance_criteria": [
+          {
+            "given": "a dossier requires cantonal involvement",
+            "when": "the clerk forwards it",
+            "then": "the dossier is transmitted to the canton and the transmission is recorded in the dossier history"
+          }
+        ],
+        "priority": "Won't",
+        "priority_rationale": "Monika explicitly deferred cantonal integration to after the first version.",
+        "source_quotes": [
+          "The integration with the canton can come later."
+        ],
+        "notes": "Placeholder for a later release. The interface with the canton is unknown."
+      }
+    ],
+    "non_functional_requirements": [
+      {
+        "id": "NFR-1",
+        "category": "Privacy",
+        "requirement": "All application data and documents shall be stored and processed exclusively in data centres located in Switzerland.",
+        "source_quotes": [
+          "Data has to stay in Switzerland, that's a clear requirement from the canton's data protection office.",
+          "we can't just put everything into some cloud in America"
+        ]
+      },
+      {
+        "id": "NFR-2",
+        "category": "Compliance",
+        "requirement": "Every access to a dossier (view, download, change) shall be logged with user, timestamp and action. Log entries shall be tamper-proof and retained at least as long as the dossier.",
+        "source_quotes": [
+          "And every access to a dossier should be logged, because these are legal proceedings.",
+          "If there's an appeal, we must be able to show who saw and changed what."
+        ]
+      },
+      {
+        "id": "NFR-3",
+        "category": "Accessibility",
+        "requirement": "The public portal shall meet the federal accessibility standard applicable to public websites and shall be fully operable with screen readers. The exact standard and conformance level are to be confirmed.",
+        "source_quotes": [
+          "Public websites have to meet the federal accessibility standard.",
+          "We had complaints last year about our website not working with screen readers."
+        ]
+      },
+      {
+        "id": "NFR-4",
+        "category": "Usability",
+        "requirement": "The full user interface shall be available in German and English.",
+        "source_quotes": [
+          "The council wants the portal in German and English."
+        ]
+      },
+      {
+        "id": "NFR-5",
+        "category": "Compliance",
+        "requirement": "Building files shall be retained for the lifetime of the building. Other documents such as correspondence shall follow a retention period still to be confirmed with the archive (currently assumed to be ten years).",
+        "source_quotes": [
+          "Building files are kept for the life of the building, basically forever.",
+          "Other documents like correspondence, I think ten years, but I'd need to check with the archive."
+        ]
+      },
+      {
+        "id": "NFR-6",
+        "category": "Performance",
+        "requirement": "The system shall accept PDF uploads of at least 200 MB per file. A measurable upload time target is to be defined.",
+        "source_quotes": [
+          "Some files are huge, 200 megabytes is not unusual.",
+          "And please, it has to be fast.",
+          "If uploading plans takes forever, architects will just keep sending paper."
+        ]
+      },
+      {
+        "id": "NFR-7",
+        "category": "Security",
+        "requirement": "Access shall require authenticated personal logins with role-based permissions, including roles for external authorities restricted to the dossiers assigned to them.",
+        "source_quotes": [
+          "That means we need proper login and roles."
+        ]
+      },
+      {
+        "id": "NFR-8",
+        "category": "Compliance",
+        "requirement": "Rulings shall be delivered electronically only to applicants who have recorded consent to electronic delivery. All other applicants shall receive the ruling by registered mail.",
+        "source_quotes": [
+          "but only if the applicant agrees to electronic delivery",
+          "Legally that's important."
+        ]
+      },
+      {
+        "id": "NFR-9",
+        "category": "Usability",
+        "requirement": "The applicant submission flow shall be usability-tested with private homeowners, including older people with limited computer experience, before go-live. Pass criteria are to be agreed with the Product Owner.",
+        "source_quotes": [
+          "They're often older and not very comfortable with computers.",
+          "But we also have private homeowners who want to build a garden shed or install solar panels."
+        ]
+      },
+      {
+        "id": "NFR-10",
+        "category": "Other",
+        "requirement": "The first version covering online submission and status tracking shall go live by next summer.",
+        "source_quotes": [
+          "The council wants a first version live by next summer.",
+          "but submission online and status tracking should be there."
+        ]
+      }
+    ],
+    "open_questions": [
+      {
+        "question": "Will paper applications still be accepted, and if so, who digitises them? Daniel Rossi wants to keep accepting paper, while Monika Keller wants a digital-only process, possibly with counter staff scanning applications.",
+        "why_it_matters": "This is a contradiction between stakeholders. It determines whether US-17 is needed and whether a dual process must be supported.",
+        "ask_whom": "Monika Keller together with the council",
+        "related_ids": [
+          "US-17",
+          "US-18"
+        ]
+      },
+      {
+        "question": "How will missing signatures be handled online? Is a signature still required, and if so, which form of electronic signature or identification replaces it?",
+        "why_it_matters": "Daniel named missing signatures as a common reason for incompleteness, and the legal validity of an online submission depends on the answer.",
+        "ask_whom": "Monika Keller and the legal service",
+        "related_ids": [
+          "US-1",
+          "US-3"
+        ]
+      },
+      {
+        "question": "How is 'close to the property line' defined (distance threshold), and how does the system know it? Is it applicant self-declaration or based on plan data?",
+        "why_it_matters": "US-4 cannot be implemented or tested without a clear rule.",
+        "ask_whom": "Daniel Rossi",
+        "related_ids": [
+          "US-4"
+        ]
+      },
+      {
+        "question": "What defines a 'larger project' that requires an energy certificate?",
+        "why_it_matters": "The conditional check in US-5 needs a clear criterion.",
+        "ask_whom": "Daniel Rossi",
+        "related_ids": [
+          "US-5"
+        ]
+      },
+      {
+        "question": "Can the system check the plan scale automatically, or does this remain a manual check?",
+        "why_it_matters": "Daniel named a wrong plan scale as a frequent defect, and automatic checking could reduce completeness letters further.",
+        "ask_whom": "Daniel Rossi and Sandra Frei",
+        "related_ids": [
+          "US-3",
+          "US-6"
+        ]
+      },
+      {
+        "question": "What is the maximum file size per document and per application, and what upload time is acceptable for a 200 MB file on a typical connection?",
+        "why_it_matters": "'Fast' is not testable. A measurable target is needed for NFR-6 and US-2.",
+        "ask_whom": "Daniel Rossi and Sandra Frei, ideally validated with a few architects",
+        "related_ids": [
+          "US-2",
+          "NFR-6"
+        ]
+      },
+      {
+        "question": "Which federal accessibility standard and conformance level must be met?",
+        "why_it_matters": "The acceptance tests for NFR-3 depend on the exact standard.",
+        "ask_whom": "Sandra Frei",
+        "related_ids": [
+          "NFR-3"
+        ]
+      },
+      {
+        "question": "What is the retention period for correspondence and other non-building-file documents?",
+        "why_it_matters": "Sandra was unsure about ten years, and deletion rules must be implemented correctly.",
+        "ask_whom": "Sandra Frei together with the municipal archive",
+        "related_ids": [
+          "NFR-5"
+        ]
+      },
+      {
+        "question": "How will applicants and external reviewers authenticate (for example with a cantonal or national electronic identity, or local accounts)? Can an architect act on behalf of an owner?",
+        "why_it_matters": "This affects US-1, US-8 and US-12, as well as the representation rights of architects.",
+        "ask_whom": "Sandra Frei",
+        "related_ids": [
+          "US-1",
+          "US-8",
+          "US-12",
+          "NFR-7"
+        ]
+      },
+      {
+        "question": "What are the legal requirements for electronic delivery: the form of the council's electronic signature, proof of delivery, and whether consent can be withdrawn?",
+        "why_it_matters": "Monika stressed that this is legally important, and the design of US-14 and US-15 depends on it.",
+        "ask_whom": "Monika Keller and the legal service",
+        "related_ids": [
+          "US-14",
+          "US-15",
+          "NFR-8"
+        ]
+      },
+      {
+        "question": "When and how may internal comments or office statements be shared with the applicant, and who decides?",
+        "why_it_matters": "US-9 only defines hiding comments. A controlled release process may be needed.",
+        "ask_whom": "Monika Keller",
+        "related_ids": [
+          "US-9",
+          "US-11"
+        ]
+      },
+      {
+        "question": "Do the environment office and the canton need the same review access as fire protection in the first version or later?",
+        "why_it_matters": "This defines the scope of E4 and the role model.",
+        "ask_whom": "Monika Keller and Daniel Rossi",
+        "related_ids": [
+          "US-10",
+          "US-12",
+          "US-19"
+        ]
+      },
+      {
+        "question": "Should applicants be notified (for example by email) when the status changes?",
+        "why_it_matters": "Without notifications, applicants may still call. This was not discussed.",
+        "ask_whom": "Daniel Rossi and Monika Keller",
+        "related_ids": [
+          "US-8"
+        ]
+      },
+      {
+        "question": "What is the exact go-live date for 'next summer', and which stories form the minimum first version?",
+        "why_it_matters": "This is needed for release planning and to confirm the Must priorities.",
+        "ask_whom": "Monika Keller",
+        "related_ids": [
+          "NFR-10"
+        ]
+      },
+      {
+        "question": "Must rulings and other formal documents also be available in English, or only the portal interface?",
+        "why_it_matters": "Translating legal documents has a much larger impact than translating the user interface.",
+        "ask_whom": "Monika Keller",
+        "related_ids": [
+          "US-16",
+          "NFR-4"
+        ]
+      }
+    ],
+    "assumptions": [
+      "Architects and builders submit on behalf of owners, so the portal must support representation of an owner by an architect.",
+      "The four statuses named by Monika are sufficient for the first version.",
+      "Status changes are made manually by permit clerks.",
+      "Internal comments and office statements are visible only to municipal staff and assigned reviewers.",
+      "The new solution needs its own storage infrastructure, because the current file server cannot handle large files.",
+      "Baseline figures for measuring success are six out of ten applications incomplete and about ten status calls a day."
+    ],
+    "out_of_scope": [
+      "Integration with the canton in the first version (explicitly deferred).",
+      "Showing internal comments or office statements to applicants.",
+      "Electronic delivery of rulings to applicants who have not consented."
+    ]
+  },
+  "meta": {
+    "model": "claude-opus-5-5",
+    "effort": "medium",
+    "seconds": 134.5951425830135,
+    "cost": 0.342448,
+    "tokens": 20532,
+    "fell_back": false
+  }
+}

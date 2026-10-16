@@ -1,0 +1,207 @@
+[
+  {
+    "id": "R1",
+    "kind": "requirement",
+    "expected": "Applicants (architects, builders and private homeowners) can submit a building permit application with all required documents online.",
+    "verdict": "covered",
+    "evidence": [
+      "E1",
+      "US-1",
+      "NFR-9"
+    ],
+    "explanation": "Online submission of the application with all documents is captured, and homeowners are included via usability testing."
+  },
+  {
+    "id": "R2",
+    "kind": "requirement",
+    "expected": "The system checks completeness before submission and prevents submitting without required documents such as the neighbour consent or signature.",
+    "verdict": "covered",
+    "evidence": [
+      "US-3",
+      "US-4",
+      "US-5",
+      "OQ-2"
+    ],
+    "explanation": "Submission is blocked when required documents such as the neighbour consent are missing, and signature handling is raised as an open question."
+  },
+  {
+    "id": "R3",
+    "kind": "requirement",
+    "expected": "Applicants can upload large plan PDFs (files of around 200 MB are common).",
+    "verdict": "covered",
+    "evidence": [
+      "US-2",
+      "NFR-6"
+    ],
+    "explanation": "Uploads of PDF plans of up to 200 MB are specified."
+  },
+  {
+    "id": "R4",
+    "kind": "requirement",
+    "expected": "Applicants can see the status of their application online (received, in review, additional documents needed, decision made).",
+    "verdict": "covered",
+    "evidence": [
+      "US-8",
+      "E3"
+    ],
+    "explanation": "Online status view with the four named statuses is specified."
+  },
+  {
+    "id": "R5",
+    "kind": "requirement",
+    "expected": "Internal comments, such as concerns from the fire protection office, are not visible to applicants.",
+    "verdict": "covered",
+    "evidence": [
+      "US-9",
+      "US-11",
+      "X-2"
+    ],
+    "explanation": "Internal comments and statements, including fire protection concerns, are hidden from applicants."
+  },
+  {
+    "id": "R6",
+    "kind": "requirement",
+    "expected": "External offices such as fire protection can review dossiers and submit their statements in the system.",
+    "verdict": "covered",
+    "evidence": [
+      "E4",
+      "US-10",
+      "US-11"
+    ],
+    "explanation": "Offices such as fire protection are assigned dossiers and submit statements in the system."
+  },
+  {
+    "id": "R7",
+    "kind": "nfr",
+    "expected": "Login with roles, including access for external authorities.",
+    "verdict": "covered",
+    "evidence": [
+      "NFR-7",
+      "US-12"
+    ],
+    "explanation": "Personal role-based logins are specified, including restricted roles for external authorities."
+  },
+  {
+    "id": "R8",
+    "kind": "nfr",
+    "expected": "Every access to and change of a dossier is logged, so it can be shown in an appeal who saw and changed what.",
+    "verdict": "covered",
+    "evidence": [
+      "NFR-2",
+      "US-13"
+    ],
+    "explanation": "Every access and change is logged tamper-proof and can be viewed and exported for appeals."
+  },
+  {
+    "id": "R9",
+    "kind": "nfr",
+    "expected": "Data is stored in Switzerland (requirement of the cantonal data protection office).",
+    "verdict": "covered",
+    "evidence": [
+      "NFR-1"
+    ],
+    "explanation": "Storage and processing exclusively in Swiss data centres is required."
+  },
+  {
+    "id": "R10",
+    "kind": "nfr",
+    "expected": "The portal is available in German and English.",
+    "verdict": "covered",
+    "evidence": [
+      "NFR-4",
+      "US-16"
+    ],
+    "explanation": "The full UI is available in German and English."
+  },
+  {
+    "id": "R11",
+    "kind": "nfr",
+    "expected": "The portal meets the federal accessibility standard and works with screen readers.",
+    "verdict": "covered",
+    "evidence": [
+      "NFR-3",
+      "OQ-7"
+    ],
+    "explanation": "The federal accessibility standard and screen reader operability are required."
+  },
+  {
+    "id": "R12",
+    "kind": "requirement",
+    "expected": "The decision can be delivered electronically, but only if the applicant has agreed to electronic delivery.",
+    "verdict": "covered",
+    "evidence": [
+      "US-14",
+      "US-15",
+      "NFR-8"
+    ],
+    "explanation": "Electronic delivery of rulings is allowed only with recorded consent."
+  },
+  {
+    "id": "R13",
+    "kind": "requirement",
+    "expected": "Applicants who are not comfortable with computers are supported, e.g. counter staff digitise a paper application.",
+    "verdict": "covered",
+    "evidence": [
+      "US-17",
+      "NFR-9"
+    ],
+    "explanation": "Counter staff digitise paper applications, and less experienced users are included in usability testing."
+  },
+  {
+    "id": "R14",
+    "kind": "nfr",
+    "expected": "Retention rules: building files are kept for the life of the building; other documents such as correspondence for a period still to be confirmed (around 10 years).",
+    "verdict": "covered",
+    "evidence": [
+      "NFR-5",
+      "OQ-8"
+    ],
+    "explanation": "Building files are kept for the building's lifetime, and other documents follow a period to be confirmed (assumed ten years)."
+  },
+  {
+    "id": "Q1",
+    "kind": "open_question",
+    "expected": "Will paper submissions still be accepted, and if so who digitises them? (Disagreement between the Head of Building Department and the Permit Clerk; council decision needed.)",
+    "verdict": "covered",
+    "evidence": [
+      "OQ-1"
+    ],
+    "explanation": "The paper-channel conflict between Rossi and Keller is raised for a council decision."
+  },
+  {
+    "id": "Q2",
+    "kind": "open_question",
+    "expected": "What upload performance is acceptable? \"Fast\" was not quantified.",
+    "verdict": "covered",
+    "evidence": [
+      "OQ-6",
+      "NFR-6"
+    ],
+    "explanation": "The unquantified upload time target is raised as an open question."
+  },
+  {
+    "id": "S1",
+    "kind": "scope",
+    "expected": "First release by next summer covers online submission and status tracking; integration with the canton comes later.",
+    "verdict": "covered",
+    "evidence": [
+      "NFR-10",
+      "X-1",
+      "US-19"
+    ],
+    "explanation": "The first release by next summer covers submission and status tracking, with canton integration deferred."
+  },
+  {
+    "id": "G1",
+    "kind": "goal",
+    "expected": "Success: most applications arrive online, fewer completeness letters (target: half) and fewer status phone calls.",
+    "verdict": "partial",
+    "evidence": [
+      "E2",
+      "E3",
+      "US-18",
+      "A-6"
+    ],
+    "explanation": "Halving completeness letters and reducing status calls are captured, but the goal that most applications arrive online is only tracked, not stated as a target."
+  }
+]

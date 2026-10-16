@@ -1,0 +1,212 @@
+[
+  {
+    "id": "R1",
+    "kind": "requirement",
+    "expected": "Parents can report their child's absence on their phone in about a minute, including the evening before.",
+    "verdict": "covered",
+    "evidence": [
+      "US-1",
+      "US-2",
+      "NFR-3"
+    ],
+    "explanation": "Phone reporting, evening-before reporting and the under-one-minute target are all captured."
+  },
+  {
+    "id": "R2",
+    "kind": "requirement",
+    "expected": "The report captures the child, the days and a reason category (sick, doctor's appointment, family reason) without medical details.",
+    "verdict": "covered",
+    "evidence": [
+      "US-1",
+      "US-3",
+      "NFR-1"
+    ],
+    "explanation": "The report captures child, days and a predefined reason category, with no medical details."
+  },
+  {
+    "id": "R3",
+    "kind": "requirement",
+    "expected": "Parents receive a confirmation that their report was received.",
+    "verdict": "covered",
+    "evidence": [
+      "US-4"
+    ],
+    "explanation": "A confirmation is shown after the report is submitted."
+  },
+  {
+    "id": "R4",
+    "kind": "requirement",
+    "expected": "Parents can request planned absences in advance; up to two days the class teacher approves, longer absences the principal approves.",
+    "verdict": "covered",
+    "evidence": [
+      "US-6",
+      "US-7",
+      "US-8"
+    ],
+    "explanation": "Advance requests are covered, with class teacher approval up to two days and principal approval for longer absences."
+  },
+  {
+    "id": "R5",
+    "kind": "requirement",
+    "expected": "Parents can see who needs to approve a request and whether it was approved.",
+    "verdict": "covered",
+    "evidence": [
+      "US-9"
+    ],
+    "explanation": "Parents see the approver role and the current status of their request."
+  },
+  {
+    "id": "R6",
+    "kind": "requirement",
+    "expected": "Teachers record attendance at the start of each lesson on a tablet in under a minute.",
+    "verdict": "covered",
+    "evidence": [
+      "US-10",
+      "NFR-4"
+    ],
+    "explanation": "Attendance is taken per lesson on a tablet in under one minute."
+  },
+  {
+    "id": "R7",
+    "kind": "requirement",
+    "expected": "When a child is marked absent without a report from the parents, the school office is alerted so it can call the family.",
+    "verdict": "covered",
+    "evidence": [
+      "US-11"
+    ],
+    "explanation": "The office is alerted about unreported absences and contacts the family."
+  },
+  {
+    "id": "R8",
+    "kind": "requirement",
+    "expected": "Absences are visible to the class teacher, to the subject teachers who have the child that day, and as an overview to the school office.",
+    "verdict": "covered",
+    "evidence": [
+      "US-13",
+      "US-14",
+      "US-15",
+      "NFR-6"
+    ],
+    "explanation": "The class teacher, subject teacher and office views are all specified."
+  },
+  {
+    "id": "R9",
+    "kind": "requirement",
+    "expected": "The school office can enter absences reported by phone into the same system.",
+    "verdict": "covered",
+    "evidence": [
+      "US-5",
+      "NFR-9"
+    ],
+    "explanation": "The office enters phone-reported absences into the same system."
+  },
+  {
+    "id": "R10",
+    "kind": "requirement",
+    "expected": "The number of absences per semester is calculated automatically for the report card.",
+    "verdict": "covered",
+    "evidence": [
+      "US-16"
+    ],
+    "explanation": "Semester absence counts are calculated automatically for the report card."
+  },
+  {
+    "id": "R11",
+    "kind": "requirement",
+    "expected": "Parents can be notified if their child does not arrive at school.",
+    "verdict": "covered",
+    "evidence": [
+      "US-12"
+    ],
+    "explanation": "Parents are notified when their child is marked absent without a report."
+  },
+  {
+    "id": "R12",
+    "kind": "nfr",
+    "expected": "Information to parents respects custody arrangements and legal restrictions from the canton's student database.",
+    "verdict": "covered",
+    "evidence": [
+      "US-19",
+      "US-12",
+      "NFR-6"
+    ],
+    "explanation": "Custody restrictions from the canton database control what information parents receive."
+  },
+  {
+    "id": "R13",
+    "kind": "nfr",
+    "expected": "Students, classes and parents come from the canton's student administration system; no manual entry.",
+    "verdict": "covered",
+    "evidence": [
+      "US-17",
+      "NFR-7",
+      "X-2"
+    ],
+    "explanation": "Master data comes from the canton system and manual entry is excluded."
+  },
+  {
+    "id": "R14",
+    "kind": "nfr",
+    "expected": "Health data is protected: no free-text medical information that many people can read.",
+    "verdict": "covered",
+    "evidence": [
+      "US-3",
+      "NFR-1",
+      "X-1"
+    ],
+    "explanation": "There is no free-text or medical reason field, and teachers see only the reason category."
+  },
+  {
+    "id": "R15",
+    "kind": "nfr",
+    "expected": "Available in German and English, and ideally Albanian, Portuguese and Tigrinya.",
+    "verdict": "covered",
+    "evidence": [
+      "US-20",
+      "NFR-8"
+    ],
+    "explanation": "German and English are required, with Albanian, Portuguese and Tigrinya as candidates."
+  },
+  {
+    "id": "R16",
+    "kind": "nfr",
+    "expected": "Report-card totals are kept; daily details are deleted after the school year (to be confirmed).",
+    "verdict": "covered",
+    "evidence": [
+      "NFR-2"
+    ],
+    "explanation": "Report-card totals are kept, daily details are deleted after the school year, and this is still to be confirmed."
+  },
+  {
+    "id": "Q1",
+    "kind": "open_question",
+    "expected": "Retention periods need to be confirmed with the canton's data protection officer.",
+    "verdict": "covered",
+    "evidence": [
+      "OQ-2",
+      "NFR-2"
+    ],
+    "explanation": "Retention periods are raised as a question for the canton data protection officer."
+  },
+  {
+    "id": "Q2",
+    "kind": "open_question",
+    "expected": "How does the interface to the student administration system work? (Ask the canton's IT department.)",
+    "verdict": "covered",
+    "evidence": [
+      "OQ-1"
+    ],
+    "explanation": "The interface question is addressed to the canton IT department."
+  },
+  {
+    "id": "G1",
+    "kind": "goal",
+    "expected": "Success: the school knows about every missing child within 30 minutes of the first lesson.",
+    "verdict": "covered",
+    "evidence": [
+      "NFR-5",
+      "SUMMARY"
+    ],
+    "explanation": "The thirty-minute detection target is stated, and the summary names missing children as the main risk."
+  }
+]
