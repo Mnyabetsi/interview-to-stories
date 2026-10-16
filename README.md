@@ -11,7 +11,7 @@ Paste an interview transcript and get:
 
 The AI writes the draft. A Product Owner reviews it and makes the decisions.
 
-> 🔗 **Live demo:** _add your Streamlit Cloud link here_
+> 🔗 **Live demo:** https://interview-to-stories.streamlit.app
 > 📄 **Product brief:** [docs/PRODUCT_BRIEF.md](docs/PRODUCT_BRIEF.md)
 
 <!-- Add a screenshot or GIF here: docs/screenshot.png -->
