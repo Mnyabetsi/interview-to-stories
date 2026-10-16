@@ -1,5 +1,5 @@
 # Shared settings for both themes. Viewers get the theme that matches their system setting
-# and can switch between light and dark in the app menu (‚ãÆ, top right).
+# and can switch between light and dark in the app menu (three dots, top right).
 [theme]
 font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
 headingFont = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
